@@ -1,0 +1,6 @@
+"C:\\Users\\zhuqi\\AppData\\Local\\Arduino15\\packages\\realtek\\tools\\ameba_pro2_tools\\1.2.5/prebuild_windows.exe" 
+"C:\\Users\\zhuqi\\AppData\\Local\\Arduino15\\packages\\realtek\\tools\\ameba_pro2_toolchain\\1.0.1-p1" 
+"C:\\Users\\zhuqi\\AppData\\Local\\Arduino15\\packages\\realtek\\tools\\ameba_pro2_toolchain2\\1.0.1-p2" 
+1.0.1-p1 
+1.0.1-p2
+
