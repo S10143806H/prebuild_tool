@@ -6,7 +6,13 @@
 #include <errno.h>
 #include "dirent.h"	// https://codeyarns.com/tech/2014-06-06-how-to-use-dirent-h-with-visual-studio.html#gsc.tab=0
 
-#define PRINT_DEBUG 0
+#define PRINT_DEBUG 1
+
+#ifdef _WIN32
+const char PATH_SEPERATOR = '\\';
+#else
+const char PATH_SEPERATOR = '/';
+#endif
 
 int isDirExists(const char* path);
 void copyFile(const char* sourcePath, const char* destinationPath);
@@ -42,7 +48,8 @@ int main(int argc, char *argv[]) {
 	}
 
 	deleteDirectory(toolchain_p2_path);
-	mkdir(toolchain_p2_path, 0755);
+	
+	// mkdir(toolchain_p2_path, 0755);
 
 	return 0;
 }
@@ -112,7 +119,7 @@ void copyFile(const char* sourcePath, const char* destinationPath) {
 	fclose(sourceFile);
 	fclose(destinationFile);
 #if PRINT_DEBUG
-	printf("[%s][Error] file copy done\n", __func__);
+	printf("[%s][INFO] file copy done\n", __func__);
 #endif
 }
 
@@ -161,16 +168,22 @@ void deleteDirectory(const char* path) {
 		if (entry->d_type == DT_DIR) {
 			deleteDirectory(filePath);
 #if PRINT_DEBUG
-			printf("[%s][Error] Directory delete!\r\n", __func__);
+			printf("[%s][INFO] Directory delete!\r\n", __func__);
 #endif
 		}
 		else {
 			remove(filePath);
 #if PRINT_DEBUG
-			printf("[%s][Error] File delete!\r\n", __func__);
+			printf("[%s][INFO] File delete!\r\n", __func__);
 #endif
 		}
 	}
 	closedir(dir);
+	rmdir(path);
+#ifdef _WIN32 // TODO: rewrite using PATH_SEPERATOR
+	strcat(path, "\\..");
+#else
+	strcat(path, "/..");
+#endif
 	rmdir(path);
 }
