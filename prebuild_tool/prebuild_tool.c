@@ -14,9 +14,13 @@ const char PATH_SEPERATOR = '\\';
 const char PATH_SEPERATOR = '/';
 #endif
 
+/* validate directory */
 int isDirExists(const char* path);
+/* copy files from sourcePath to destinationPath */
 void copyFile(const char* sourcePath, const char* destinationPath);
+/* copy dirs from sourcePath to destinationPath */
 void copyDirectory(const char* sourcePath, const char* destinationPath);
+/* recursively remove all files and dirs in path */
 void deleteDirectory(const char* path);
 
 int main(int argc, char *argv[]) { 
@@ -54,8 +58,6 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
-/**
-*/
 int isDirExists(const char* path) {
 	DIR* dir;
 	struct dirent* ent;
