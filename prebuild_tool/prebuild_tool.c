@@ -1,17 +1,34 @@
-﻿#include <io.h>
+﻿#ifdef _WIN32
+    #include <io.h>
+    #include "dirent.h"	// https://codeyarns.com/tech/2014-06-06-how-to-use-dirent-h-with-visual-studio.html#gsc.tab=0
+#elif __linux__
+    #include <inttypes.h>
+    #include <unistd.h>
+    #include <dirent.h>
+    #define __int64 int64_t
+    #define _close close
+    #define _read read
+    #define _lseek64 lseek64
+    #define _O_RDONLY O_RDONLY
+    #define _open open
+    #define _lseeki64 lseek64
+    #define _lseek lseek
+    #define stricmp strcasecmp
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <errno.h>
-#include "dirent.h"	// https://codeyarns.com/tech/2014-06-06-how-to-use-dirent-h-with-visual-studio.html#gsc.tab=0
 
-#define PRINT_DEBUG 1
+
+#define PRINT_DEBUG 0
 
 #ifdef _WIN32
-const char PATH_SEPERATOR = '\\';
+const char PATH_SEPARATOR = '\\';
 #else
-const char PATH_SEPERATOR = '/';
+const char PATH_SEPARATOR = '/';
 #endif
 
 /* validate directory */
@@ -22,6 +39,8 @@ void copyFile(const char* sourcePath, const char* destinationPath);
 void copyDirectory(const char* sourcePath, const char* destinationPath);
 /* recursively remove all files and dirs in path */
 void deleteDirectory(const char* path);
+/* remove string after last occurrance of backspace */
+void removeLastPathComponent(char* path);
 
 int main(int argc, char *argv[]) { 
 	// Check if the number of input arguments is correct 
@@ -49,13 +68,23 @@ int main(int argc, char *argv[]) {
 	// check whether directory exists
 	if (isDirExists(toolchain_p1_path) && isDirExists(toolchain_p2_path)) { 
 		copyDirectory(toolchain_p2_path, toolchain_p1_path);
+		removeLastPathComponent(toolchain_p2_path);
+		deleteDirectory(toolchain_p2_path);
 	}
 
-	deleteDirectory(toolchain_p2_path);
-	
-	// mkdir(toolchain_p2_path, 0755);
-
 	return 0;
+}
+
+void removeLastPathComponent(char* path) {
+	int length = strlen(path);
+	int i;
+
+	for (i = length - 1; i >= 0; i--) {
+		if (path[i] == PATH_SEPARATOR) {
+			path[i] = '\0';  // Set null character to remove the last path component
+			break;
+		}
+	}
 }
 
 int isDirExists(const char* path) {
@@ -182,10 +211,6 @@ void deleteDirectory(const char* path) {
 	}
 	closedir(dir);
 	rmdir(path);
-#ifdef _WIN32 // TODO: rewrite using PATH_SEPERATOR
-	strcat(path, "\\..");
-#else
-	strcat(path, "/..");
-#endif
+	strcat(path,"/..");
 	rmdir(path);
 }
