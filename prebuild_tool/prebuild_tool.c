@@ -211,6 +211,6 @@ void deleteDirectory(const char* path) {
 	}
 	closedir(dir);
 	rmdir(path);
-	strcat(path,"/..");
-	rmdir(path);
+	//strcat(path,"/..");
+	//rmdir(path);
 }
