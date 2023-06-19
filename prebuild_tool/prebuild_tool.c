@@ -1,7 +1,13 @@
-﻿#ifdef _WIN32
+﻿/* 
+README: How to compile the executables
+   Windows:       compile using Visual Studio Build as Release
+   Linux  :       gcc -o prebuild_linux prebuild_tools.c
+   MacOS  :       gcc -o prebuild_macos prebuild_tools.c
+*/
+#ifdef _WIN32
     #include <io.h>
     #include "dirent.h"	// https://codeyarns.com/tech/2014-06-06-how-to-use-dirent-h-with-visual-studio.html#gsc.tab=0
-#elif __linux__
+#else // #elif __linux__
     #include <inttypes.h>
     #include <unistd.h>
     #include <dirent.h>
@@ -21,7 +27,6 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <errno.h>
-
 
 #define PRINT_DEBUG 0
 
@@ -52,8 +57,8 @@ int main(int argc, char *argv[]) {
 	} 
 
 	// Retrieve the input parameters 
-	const char* toolchain_p1_path = argv[1];
-	const char* toolchain_p2_path = argv[2];
+	char* toolchain_p1_path = argv[1];
+	char* toolchain_p2_path = argv[2];
 	char *toolchain_p1 = argv[3];
 	char *toolchain_p2 = argv[4];
 
