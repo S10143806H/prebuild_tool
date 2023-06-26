@@ -28,7 +28,7 @@ README: How to compile the executables
 #include <sys/stat.h>
 #include <errno.h>
 
-#define PRINT_DEBUG 0
+#define PRINT_DEBUG 1
 
 #ifdef _WIN32
 const char PATH_SEPARATOR = '\\';
