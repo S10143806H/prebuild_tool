@@ -1,10 +1,4 @@
-﻿/* 
-README: How to compile the executables
-   Windows:       compile using Visual Studio Build as Release
-   Linux  :       gcc -o prebuild_linux prebuild_tools.c
-   MacOS  :       gcc -o prebuild_macos prebuild_tools.c
-*/
-#ifdef _WIN32
+﻿#ifdef _WIN32
     #include <io.h>
     #include "dirent.h"	// https://codeyarns.com/tech/2014-06-06-how-to-use-dirent-h-with-visual-studio.html#gsc.tab=0
 #else // #elif __linux__
@@ -28,7 +22,7 @@ README: How to compile the executables
 #include <sys/stat.h>
 #include <errno.h>
 
-#define PRINT_DEBUG 1
+#define PRINT_DEBUG		0
 
 #ifdef _WIN32
 const char PATH_SEPARATOR = '\\';
@@ -78,18 +72,6 @@ int main(int argc, char *argv[]) {
 	}
 
 	return 0;
-}
-
-void removeLastPathComponent(char* path) {
-	int length = strlen(path);
-	int i;
-
-	for (i = length - 1; i >= 0; i--) {
-		if (path[i] == PATH_SEPARATOR) {
-			path[i] = '\0';  // Set null character to remove the last path component
-			break;
-		}
-	}
 }
 
 int isDirExists(const char* path) {
@@ -218,4 +200,16 @@ void deleteDirectory(const char* path) {
 	rmdir(path);
 	//strcat(path,"/..");
 	//rmdir(path);
+}
+
+void removeLastPathComponent(char* path) {
+	int length = strlen(path);
+	int i;
+
+	for (i = length - 1; i >= 0; i--) {
+		if (path[i] == PATH_SEPARATOR) {
+			path[i] = '\0';  // Set null character to remove the last path component
+			break;
+		}
+	}
 }
