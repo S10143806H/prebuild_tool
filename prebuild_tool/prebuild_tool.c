@@ -216,8 +216,8 @@ void deleteDirectory(const char* path) {
 }
 
 void removeLastPathComponent(char* path) {
-	int length = strlen(path);
-	int i;
+	size_t length = strlen(path);
+	size_t i;
 
 	for (i = length - 1; i >= 0; i--) {
 		if (path[i] == PATH_SEPARATOR) {
